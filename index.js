@@ -62,7 +62,7 @@ var createNewRecord = function (nickName, title, link) { return __awaiter(void 0
             case 1:
                 data = _b.sent();
                 accessToken = (_a = data === null || data === void 0 ? void 0 : data.app_access_token) !== null && _a !== void 0 ? _a : "";
-                console.log(accessToken, 'accessToken');
+                console.log('accessToken: ', accessToken);
                 client.bitable.appTableRecord
                     .create({
                     path: {
@@ -82,7 +82,7 @@ var createNewRecord = function (nickName, title, link) { return __awaiter(void 0
                     },
                 }, lark.withTenantToken(accessToken))
                     .then(function (res) {
-                    console.log(res);
+                    console.error('create table error: ', res);
                 });
                 return [2 /*return*/];
         }
@@ -95,12 +95,12 @@ wechaty
 })
     .on("login", function (user) { return console.log("User ".concat(user, " logged in")); })
     .on("message", function (message) { return __awaiter(void 0, void 0, void 0, function () {
-    var jsObject, appname, room, contact, _a, url, title;
+    var messageObject, appname, room, contact, _a, url, title;
     var _b, _c;
     return __generator(this, function (_d) {
         if (message.type() === wechaty.Message.Type.Url) {
-            jsObject = parser.parse(message.text());
-            appname = ((_b = jsObject === null || jsObject === void 0 ? void 0 : jsObject.msg) === null || _b === void 0 ? void 0 : _b.appinfo).appname;
+            messageObject = parser.parse(message.text());
+            appname = ((_b = messageObject === null || messageObject === void 0 ? void 0 : messageObject.msg) === null || _b === void 0 ? void 0 : _b.appinfo).appname;
             if (appname !== "全民K歌") {
                 return [2 /*return*/];
             }
@@ -109,8 +109,8 @@ wechaty
             if (!contact) {
                 return [2 /*return*/];
             }
-            _a = (_c = jsObject === null || jsObject === void 0 ? void 0 : jsObject.msg) === null || _c === void 0 ? void 0 : _c.appmsg, url = _a.url, title = _a.title;
-            console.log(jsObject, "jsObject", contact, room);
+            _a = (_c = messageObject === null || messageObject === void 0 ? void 0 : messageObject.msg) === null || _c === void 0 ? void 0 : _c.appmsg, url = _a.url, title = _a.title;
+            console.log('contact: ', contact, 'room:', room, 'msg: ', messageObject);
             createNewRecord(contact === null || contact === void 0 ? void 0 : contact.name(), title, url);
         }
         return [2 /*return*/];

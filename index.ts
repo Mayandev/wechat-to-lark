@@ -30,7 +30,7 @@ const createNewRecord = async (
 
   const accessToken = data?.app_access_token ?? "";
 
-  console.log(accessToken, 'accessToken');
+  console.log('accessToken: ', accessToken);
 
   client.bitable.appTableRecord
     .create(
@@ -54,7 +54,7 @@ const createNewRecord = async (
       lark.withTenantToken(accessToken)
     )
     .then((res) => {
-      console.log(res);
+      console.error('create table error: ', res);
     });
 };
 
@@ -70,8 +70,8 @@ wechaty
   .on("login", (user) => console.log(`User ${user} logged in`))
   .on("message", async (message) => {
     if (message.type() === wechaty.Message.Type.Url) {
-      const jsObject = parser.parse(message.text());
-      const { appname } = jsObject?.msg?.appinfo;
+      const messageObject = parser.parse(message.text());
+      const { appname } = messageObject?.msg?.appinfo;
 
       if (appname !== "全民K歌") {
         return;
@@ -90,9 +90,9 @@ wechaty
       //   return;
       // }
 
-      const { url, title } = jsObject?.msg?.appmsg;
-      console.log(jsObject, "jsObject", contact, room);
-
+      const { url, title } = messageObject?.msg?.appmsg;
+      
+      console.log('contact: ', contact, 'room:', room, 'msg: ', messageObject);
       createNewRecord(contact?.name(), title, url);
     }
   });
