@@ -78,11 +78,12 @@ var createNewRecord = function (nickName, title, link) { return __awaiter(void 0
                                 link: link,
                             },
                             时间: new Date().valueOf(),
+                            状态: '未点评'
                         },
                     },
                 }, lark.withTenantToken(accessToken))
                     .then(function (res) {
-                    console.error('create table error: ', res);
+                    console.error('create table result: ', res);
                 });
                 return [2 /*return*/];
         }

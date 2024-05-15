@@ -48,13 +48,14 @@ const createNewRecord = async (
               link: link,
             },
             时间: new Date().valueOf(),
+            状态: '未点评'
           },
         },
       },
       lark.withTenantToken(accessToken)
     )
     .then((res) => {
-      console.error('create table error: ', res);
+      console.error('create table result: ', res);
     });
 };
 
