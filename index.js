@@ -78,7 +78,6 @@ var createNewRecord = function (nickName, title, link) { return __awaiter(void 0
                                 link: link,
                             },
                             时间: new Date().valueOf(),
-                            状态: '未点评'
                         },
                     },
                 }, lark.withTenantToken(accessToken))

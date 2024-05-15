@@ -48,7 +48,6 @@ const createNewRecord = async (
               link: link,
             },
             时间: new Date().valueOf(),
-            状态: '未点评'
           },
         },
       },
