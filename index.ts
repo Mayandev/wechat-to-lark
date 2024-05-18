@@ -7,7 +7,7 @@ const appSecret = process.env.APP_SECRET;
 const parser = new XMLParser();
 const client = new lark.Client({
   appId: appId,
-  appSecret: appSecret
+  appSecret: appSecret,
 });
 
 const appToken = process.env.APP_TOKEN;
@@ -22,7 +22,7 @@ const createNewRecord = async (
     {
       data: {
         app_id: appId,
-        app_secret: appSecret
+        app_secret: appSecret,
       },
     },
     lark.withTenantToken("")
@@ -30,7 +30,7 @@ const createNewRecord = async (
 
   const accessToken = data?.app_access_token ?? "";
 
-  console.log('accessToken: ', accessToken);
+  console.log("accessToken: ", accessToken);
 
   client.bitable.appTableRecord
     .create(
@@ -54,7 +54,12 @@ const createNewRecord = async (
       lark.withTenantToken(accessToken)
     )
     .then((res) => {
-      console.error('create table result: ', res);
+      console.log(
+        "time: ",
+        new Date(),
+        "create table result: ",
+        JSON.stringify(res?.data?.record?.fields)
+      );
     });
 };
 
@@ -70,6 +75,7 @@ wechaty
   .on("login", (user) => console.log(`User ${user} logged in`))
   .on("message", async (message) => {
     if (message.type() === wechaty.Message.Type.Url) {
+      console.log("current time: ", new Date());
       const messageObject = parser.parse(message.text());
       const { appname } = messageObject?.msg?.appinfo;
 
@@ -91,9 +97,12 @@ wechaty
       // }
 
       const { url, title } = messageObject?.msg?.appmsg;
-      
-      console.log('contact: ', contact, 'room:', room, 'msg: ', messageObject);
+      console.log("contact: ", contact, "msg: ", messageObject);
       createNewRecord(contact?.name(), title, url);
     }
+  })
+  .on("error", async (error) => {
+    console.error("time:", new Date(), "error: ", error);
   });
+
 wechaty.start();

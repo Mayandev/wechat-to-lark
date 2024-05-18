@@ -44,7 +44,7 @@ var appSecret = process.env.APP_SECRET;
 var parser = new XMLParser();
 var client = new lark.Client({
     appId: appId,
-    appSecret: appSecret
+    appSecret: appSecret,
 });
 var appToken = process.env.APP_TOKEN;
 var tableId = process.env.TABLE_ID;
@@ -56,13 +56,13 @@ var createNewRecord = function (nickName, title, link) { return __awaiter(void 0
             case 0: return [4 /*yield*/, client.auth.appAccessToken.internal({
                     data: {
                         app_id: appId,
-                        app_secret: appSecret
+                        app_secret: appSecret,
                     },
                 }, lark.withTenantToken(""))];
             case 1:
                 data = _b.sent();
                 accessToken = (_a = data === null || data === void 0 ? void 0 : data.app_access_token) !== null && _a !== void 0 ? _a : "";
-                console.log('accessToken: ', accessToken);
+                console.log("accessToken: ", accessToken);
                 client.bitable.appTableRecord
                     .create({
                     path: {
@@ -82,7 +82,8 @@ var createNewRecord = function (nickName, title, link) { return __awaiter(void 0
                     },
                 }, lark.withTenantToken(accessToken))
                     .then(function (res) {
-                    console.error('create table result: ', res);
+                    var _a, _b;
+                    console.log("time: ", new Date(), "create table result: ", JSON.stringify((_b = (_a = res === null || res === void 0 ? void 0 : res.data) === null || _a === void 0 ? void 0 : _a.record) === null || _b === void 0 ? void 0 : _b.fields));
                 });
                 return [2 /*return*/];
         }
@@ -99,6 +100,7 @@ wechaty
     var _b, _c;
     return __generator(this, function (_d) {
         if (message.type() === wechaty.Message.Type.Url) {
+            console.log("current time: ", new Date());
             messageObject = parser.parse(message.text());
             appname = ((_b = messageObject === null || messageObject === void 0 ? void 0 : messageObject.msg) === null || _b === void 0 ? void 0 : _b.appinfo).appname;
             if (appname !== "全民K歌") {
@@ -110,9 +112,15 @@ wechaty
                 return [2 /*return*/];
             }
             _a = (_c = messageObject === null || messageObject === void 0 ? void 0 : messageObject.msg) === null || _c === void 0 ? void 0 : _c.appmsg, url = _a.url, title = _a.title;
-            console.log('contact: ', contact, 'room:', room, 'msg: ', messageObject);
+            console.log("contact: ", contact, "msg: ", messageObject);
             createNewRecord(contact === null || contact === void 0 ? void 0 : contact.name(), title, url);
         }
+        return [2 /*return*/];
+    });
+}); })
+    .on("error", function (error) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        console.error("time:", new Date(), "error: ", error);
         return [2 /*return*/];
     });
 }); });
